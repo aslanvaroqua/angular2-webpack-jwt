@@ -1,29 +1,21 @@
-module.exports = {
-  entry: './main.ts',
-  output: {
-    filename: 'bundle.js'
-  },
-  resolve: {
-    // Add `.ts` and `.tsx` as a resolvable extension.
-    extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js']
-  },
-  module: {
-    loaders: [
-      {
-        test: /\.scss$/,
-        loaders: ['style', 'css', 'sass']
-      }
-      {
-        test: /\.(png|svg|jpg|gif)$/,
-        loader: [
-          'file-loader'
-        ]
-      },
-      // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
-      {
-        test: /\.ts(x?)$/,
-        loader: 'ts-loader'
-      }
-    ]
-  }
+// file : /webpack.config.js
+
+const WebpackConfig = require('webpack-config');
+
+const TARGET = process.env.npm_lifecycle_event;
+
+var webpackConfig;
+
+switch (TARGET) {
+  case 'start':
+  webpackConfig = './config/webpack-dev.config.js';
+  break;
+  case 'test':
+  webpackConfig = './config/webpack-test.config.js';
+  break;
+default:
+  webpackConfig = './config/webpack-dev.config.js';
+  break
 }
+
+module.exports = new WebpackConfig().extend(webpackConfig);
